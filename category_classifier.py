@@ -22,11 +22,13 @@ class CategoryClassifier:
     #----------------defining themes-------------------------------------------------------------------
     def get_themes(self):
         return [
-            'Call with earphones have audio issues',
-            'video playing using earphones have issues',
-            'conference call has issues',
+            'Call with earphones having audio issues',
+            'video playing with earphones having issues',
+            'conference call having issues',
             'migrating from Apple to Google has concerns',
             'Ease of using the functionality',
+            'Google apps are difficult to use',
+            'Apple vs Google cost'
         ]
 
     #----------------creating embeddings for review and the themes-------------------------------------
@@ -51,10 +53,10 @@ class CategoryClassifier:
         df['cleaned_reviews'] = df['summary'].apply(self.clean_text)
         df['category'] = [self.find_similarity(review, self.get_theme_embeddgings(self.get_themes())) for review in
                           df['cleaned_reviews']]
-        df.to_csv(path_or_buf='./classified_posts.csv', index=False, quoting=csv.QUOTE_ALL, quotechar='"')
+        df.to_csv(path_or_buf=f'./classified_{sentiment}_posts.csv', index=False, quoting=csv.QUOTE_ALL, quotechar='"')
 
 
-if __name__ == "__main__":
-    theme_categorizer = CategoryClassifier()
-    for item in ["negative"]:
-        theme_categorizer.generate_theme_mappings(sentiment=item)
+# if __name__ == "__main__":
+#     theme_categorizer = CategoryClassifier()
+#     for item in ["negative"]:
+#         theme_categorizer.generate_theme_mappings(sentiment=item)
