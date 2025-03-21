@@ -1,31 +1,35 @@
-import json, os, dotenv
-import pandas as pd
 
-import multiprocessing, time
+#----------------------installed packages
 import dask
 from dask import delayed, compute
 from dask.distributed import Client
-import dask.bag as db
+import dotenv
+import pandas as pd
+#------------------------standard packages with python--------------------
+import multiprocessing, time, json, os
 
+
+#------------------------custom classes and packages-----------
 from reddit_handler import RedditHandler
 from sentiment_analyzer import SentimentAnalyzer
 from review_classification import ReviewClassifier
 from generate_query import GenerateSearchQueries
 from category_classifier import CategoryClassifier
 
-#------configuration to force dask scheduler to use full parallel processing -----------------
+#------------------------configuration to force dask scheduler to use full parallel processing -----------------
 dask.config.set({"distributed.scheduler.worker-ttl":None})
 num_workers = multiprocessing.cpu_count()
 print(num_workers)
-#create a classifier instance
+
+#------------------------create a classifier instance---------------
 classifier = ReviewClassifier()
 
-
+#------------------------functions needed preprocessing-------------
 # function for parallel processing of classification tasks
 def classify_reviews(review: str, sentiment: str, task:str):
     return classifier.classifyReview(sentiment=sentiment, comment=review,task=task)
 
-
+#------------------------MAIN function------------------------------
 if __name__ == "__main__":
     dotenv.load_dotenv()
     # -----------------generate search queries----------------------------------------------
