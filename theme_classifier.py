@@ -23,12 +23,13 @@ class CategoryClassifier:
     def get_themes(self):
         return [
             'Call with earphones having audio issues',
-            'video playing with earphones having issues',
-            'conference call having issues',
-            'migrating from Apple to Google has concerns',
+            'Video playing with earphones having issues',
+            'Conference call having issues',
             'Ease of using the functionality',
-            'Google apps are difficult to use',
-            'Apple vs Google cost'
+            'Apps are difficult to use',
+            'audio quality issues',
+            'pairing and connection issues',
+            'pairing and sync issues'
         ]
 
     #----------------creating embeddings for review and the themes-------------------------------------
