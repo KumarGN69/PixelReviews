@@ -21,8 +21,8 @@ class RedditHandler:
         self.client_secret = os.getenv('REDDIT_CLIENT_SECRET')
         self.client_useragent = os.getenv('REDDIT_USER_AGENT')
         self.client_searchqueries = queries
-        # self.subreddits = ["GooglePixel","Pixel","Google","pixel_phones","Smartphones","Android","apple","applesucks","iphone"]
-        self.subreddits = ["GooglePixel", "Pixel", "Google", "pixel_phones"]
+        self.subreddits = ["GooglePixel","Pixel","Google","pixel_phones","Smartphones","Android","apple","applesucks","iphone"]
+        # self.subreddits = ["GooglePixel", "Pixel", "Google", "pixel_phones"]
 # -----------------------------------------------------------------
 
 # -----------------------------------------------------------------
@@ -62,7 +62,6 @@ class RedditHandler:
                     # reddit = self.getRedditInstance()
                     subreddit_instance = reddit.subreddit(subreddit)
                     posts = subreddit_instance.search(
-                        # query=self.client_searchqueries,
                         query=f"self_text:{query}",
                         time_filter=os.getenv('TIME_FILTER'),
                         limit=int(os.getenv('NUM_POSTS')),

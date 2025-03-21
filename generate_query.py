@@ -25,11 +25,11 @@ class GenerateSearchQueries:
             model=self.model.MODEL_NAME,
             prompt = (
                 f"You are an expert in crafting targeted Reddit search queries to extract comprehensive user feedback" 
-                f"comparing Google and Apple products. Generate a complete list of natural-language search phrases" 
+                f"Generate a complete list of natural-language search phrases in {self.keyphrases}" 
                 f"using the boolean operator AND in CAPS to combine elements from our dataset:"
                 
                 f"**DATASET:**"
-                f"All Device Combinations (from {df['1PDevices']}, REQUIRED)"
+                f" All Device Combinations (from {df['1PDevices']}, REQUIRED)"
                 f"Core software User journey (from {df['UserJourney']}, REQUIRED)"
                 f"Software Components (from {df['Component']}, REQUIRED)"
                 f"Software Functionality (from {df['Functionality']}, REQUIRED)"
@@ -45,7 +45,9 @@ class GenerateSearchQueries:
                 f"No markdown, numbering, bullets or special characters"
                 f"**Restrict only the themes in {self.search_themes}**"
                 
-                f"**Example structures using the BOOLEAN OPERATOR AND and the key phrases in {self.keyphrases}**:"
+                f"**Example queries:**"
+                f"**Pixel 9 pairing issues with Pixel Watch for themes in {self.search_themes}** "
+                f"**Pixel tablet connection issues with Wifi for the themes in {self.search_themes}"
             )
         )
         search_queries = query.response.splitlines()
@@ -54,7 +56,7 @@ class GenerateSearchQueries:
             queries.append({
                 "queries": search_query
             })
-            print(search_query)
+            # print(search_query)
 
         df = pd.DataFrame(queries)
         df = df.astype(str)
