@@ -10,4 +10,7 @@ sentence_transformers~=3.4.1
 certifi~=2025.1.31
 dask~=2025.2.0
 distributed~=2025.2.0
+torch~=2.5.1
+torchvision~=0.20.1
+torchaudio~=2.5.1
 
