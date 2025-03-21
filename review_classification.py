@@ -69,7 +69,7 @@ class ReviewClassifier:
             # print("Summarization starting")
             summarizer = client.generate(
                 model=self.MODEL,
-                prompt=f"perform the task in {self.summarization_task} in {comment}"
+                prompt=f"perform the task in {self.summarization_task} on {comment}"
             )
             classification = {
                 "sentiment": sentiment,
@@ -78,6 +78,7 @@ class ReviewClassifier:
                 "summary": summarizer.response,
                 # "test_user_journey": testCUJ.response
             }
+            print(f'{sentiment}')
             print(f"summary done :\n {summarizer.response}")
             return classification
 
