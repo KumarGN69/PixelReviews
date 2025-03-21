@@ -50,6 +50,8 @@ class CategoryClassifier:
     # Convert 'cleaned_reviews' column to a list and classify themes
     def generate_theme_mappings(self,sentiment):
         df = pd.read_csv(f"./reddit_{sentiment}_review_classification.csv")
+        del (df['user_review'])
+        # print(df)
         df['cleaned_reviews'] = df['summary'].apply(self.clean_text)
         df['category'] = [self.find_similarity(review, self.get_theme_embeddgings(self.get_themes())) for review in
                           df['cleaned_reviews']]

@@ -42,7 +42,7 @@ class ReviewClassifier:
     def saveToFile(self, sentiment: str, comment_classification: list):
         """
         """
-        print(comment_classification)
+        # print(comment_classification)
         df = pd.DataFrame(comment_classification)
         json_file_name = f"reddit_{sentiment}_review_classification.json"
         df.to_json(json_file_name,indent=4,orient="records")
@@ -66,7 +66,7 @@ class ReviewClassifier:
         # )
         sentiment = sentiment
         if task == "summarize":
-            # print("Summarization starting")
+            print("Summarization starting")
             summarizer = client.generate(
                 model=self.MODEL,
                 prompt=f"perform the task in {self.summarization_task} on {comment}"
@@ -74,12 +74,13 @@ class ReviewClassifier:
             classification = {
                 "sentiment": sentiment,
                 # "categories": classifier.response,
-                "user_review": comment,
                 "summary": summarizer.response,
+                "user_review": comment
                 # "test_user_journey": testCUJ.response
             }
             print(f'{sentiment}')
-            print(f"summary done :\n {summarizer.response}")
+            # print(f"summary done :\n {summarizer.response}")
+            # print(classification)
             return classification
 
         elif task == "generateTestCUJ":

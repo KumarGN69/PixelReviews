@@ -34,7 +34,7 @@ class LLMModel:
         self.VISION_MODEL = os.getenv("VISION_MODEL")
         self.MODEL_TEMPERATURE= os.getenv('MODEL_TEMPERATURE')
         self.EMBED_MODEL = os.getenv("EMBEDDING_MODEL")
-        self.MAX_TOKENS = os.getenv('MODEL_MAX_TOKENS')
+        # self.MAX_TOKENS = os.getenv('MODEL_MAX_TOKENS')
         self.TOP_K = os.getenv('MODEL_TOP_K')
     def getmodelinstance(self):
         """Return the handle to the specific custom model
