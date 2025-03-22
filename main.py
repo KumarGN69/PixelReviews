@@ -33,25 +33,25 @@ def classify_reviews(review: str, sentiment: str, task:str):
 if __name__ == "__main__":
     # dotenv.load_dotenv()
     # # -----------------generate search queries----------------------------------------------
-    # start = time.time()
-    # query_generator = GenerateSearchQueries()
-    # query_generator.generateQueries()
-    # end = time.time()
-    # print(f"time taken for generating queries", end - start)
+    start = time.time()
+    query_generator = GenerateSearchQueries()
+    query_generator.generateQueries()
+    end = time.time()
+    print(f"time taken for generating queries", end - start)
     # # ----------------------------------------------------------------
 
     # # ----------------fetch reddit posts------------------------------------------------
-    # start = time.time()
-    # df = pd.read_csv(f"./search_queries.csv")
-    # queries = [df['queries'][record] for record in range(0, df['queries'].size)]
-    #
-    # # create Reddit handler and fetch reviews
-    # reddit = RedditHandler(queries=queries)
-    #
-    # # fetch posts from reddit for generated search strings
-    # reddit.fetch_posts()
-    # end = time.time()
-    # print(f"time taken for fetching posts", end - start)
+    start = time.time()
+    df = pd.read_csv(f"./search_queries.csv")
+    queries = [df['queries'][record] for record in range(0, df['queries'].size)]
+
+    # create Reddit handler and fetch reviews
+    reddit = RedditHandler(queries=queries)
+
+    # fetch posts from reddit for generated search strings
+    reddit.fetch_posts()
+    end = time.time()
+    print(f"time taken for fetching posts", end - start)
     # # #----------------------------------------------------------------
     # # #
     # # # ---------------analyze sentiments -------------------------------------------------
