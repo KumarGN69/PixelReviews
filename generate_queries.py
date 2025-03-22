@@ -38,7 +38,7 @@ class GenerateSearchQueries:
                 f"STRINGENT REQUIREMENTS: "
                 f"Mandatory inclusion of User Journey. "
                 f"Exclude any entry with missing values (NaNs) in ANY field. "
-                f"Create 10-12 word natural phrases, not keyword lists. "
+                f"Create NOT MORE than 10 word natural phrases "
                 f"Blend elements contextually (e.g., 'Usage of Pixel 7 with Pixel Watch'). "
                 f"Output as clean text with one query per line without numbering or special characters. "
                 # f"Output ONE query per line "

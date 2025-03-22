@@ -1,6 +1,6 @@
 import praw, time, json, dotenv, os
 import pandas as pd
-import csv
+import csv, re
 
 
 class RedditHandler:
@@ -53,12 +53,14 @@ class RedditHandler:
         Extracted post, saves to csv and json files
         :return: list of extracted posts for a given list of search strings
         """
-
+        # Define a pattern to match special characters and emojis
+        pattern = re.compile(r'[^A-Za-z0-9\s]+')
         all_posts = []
         try:
             reddit = self.getRedditInstance()
             for subreddit in self.subreddits:
                 # reddit = self.getRedditInstance()
+
                 for query in self.client_searchqueries:
                     print(f"\nSearching in r/{subreddit} for posts related to: '{query}'")
                     # reddit = self.getRedditInstance()
@@ -77,12 +79,14 @@ class RedditHandler:
                     for post in posts:
                         # print(f"📌 Found Post: {post.title} (Upvotes: {post.score})")
                         post.comments.replace_more(limit=2)  # Avoid excessive API calls
+                        cleaned_post_title = pattern.sub('', post.title)
+                        cleaned_self_text = pattern.sub('', post.selftext)
                         all_posts.append({
-                            "post_title": post.title,
-                            "self_text": "".join(line for line in post.selftext.splitlines()),
+                            "post_title": cleaned_post_title,
+                            "self_text": "".join(line for line in cleaned_self_text.splitlines()),
 
                         })
-                        time.sleep(1)  # Pause to prevent API rate limits
+                        time.sleep(3)  # Pause to prevent API rate limits
 
         except Exception as e:
             print(f"Error fetching reviews: {e}")
