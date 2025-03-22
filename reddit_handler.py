@@ -9,9 +9,9 @@ class RedditHandler:
         and search strings
     """
 
-# -----------------------------------------------------------------
-# constructor
-    def __init__(self, queries:list):
+    # -----------------------------------------------------------------
+    # constructor
+    def __init__(self, queries: list):
         """
 
         :param queries: list of search queries
@@ -21,11 +21,13 @@ class RedditHandler:
         self.client_secret = os.getenv('REDDIT_CLIENT_SECRET')
         self.client_useragent = os.getenv('REDDIT_USER_AGENT')
         self.client_searchqueries = queries
-        self.subreddits = ["GooglePixel","Pixel","Google","pixel_phones","Smartphones","Android","apple","applesucks","iphone"]
+        # self.subreddits = ["GooglePixel","Pixel","Google","pixel_phones","Smartphones","Android","apple","applesucks","iphone"]
         # self.subreddits = ["GooglePixel", "Pixel", "Google", "pixel_phones"]
-# -----------------------------------------------------------------
+        self.subreddits = ["all"]
 
-# -----------------------------------------------------------------
+    # -----------------------------------------------------------------
+
+    # -----------------------------------------------------------------
     def getRedditInstance(self):
         """
 
@@ -43,9 +45,9 @@ class RedditHandler:
             print(f"Error authenticating with Reddit: {e}")
             exit()
 
-# -----------------------------------------------------------------
+    # -----------------------------------------------------------------
 
-# -----------------------------------------------------------------
+    # -----------------------------------------------------------------
     def fetch_posts(self):
         """
         Extracted post, saves to csv and json files
@@ -61,12 +63,14 @@ class RedditHandler:
                     print(f"\nSearching in r/{subreddit} for posts related to: '{query}'")
                     # reddit = self.getRedditInstance()
                     subreddit_instance = reddit.subreddit(subreddit)
+                    cleaned_query = ' '.join(query.split())
+                    # print(f"title:'{cleaned_query}'")
                     posts = subreddit_instance.search(
-                        query=f"self_text:{query}",
+                        query=f"title:'{cleaned_query}'",
                         time_filter=os.getenv('TIME_FILTER'),
                         limit=int(os.getenv('NUM_POSTS')),
                         sort="relevance",
-                        syntax="lucene"
+                        syntax="cloudsearch"
                     )
                     # print(len(posts))
 
@@ -74,25 +78,26 @@ class RedditHandler:
                         # print(f"📌 Found Post: {post.title} (Upvotes: {post.score})")
                         post.comments.replace_more(limit=2)  # Avoid excessive API calls
                         all_posts.append({
-                             "post_title": post.title,
-                             "self_text": "".join(line for line in post.selftext.splitlines()),
+                            "post_title": post.title,
+                            "self_text": "".join(line for line in post.selftext.splitlines()),
 
                         })
                         time.sleep(1)  # Pause to prevent API rate limits
 
         except Exception as e:
             print(f"Error fetching reviews: {e}")
-    # -----------------------------------------------------------------
+        # -----------------------------------------------------------------
 
-    # -----------------------------------------------------------------
+        # -----------------------------------------------------------------
         # save to file
         if all_posts:
             # all_posts = all_posts.astype(str)
+            print(f"savings the extracted posts!")
             df = pd.DataFrame(all_posts)
             df = df.astype(str)
             json_filename = "all_posts.json"
             csv_filename = "all_posts.csv"
             df.to_json(json_filename, index=False, )
-            df.to_csv(csv_filename,index=False,quoting=csv.QUOTE_ALL,quotechar='"')
+            df.to_csv(csv_filename, index=False, quoting=csv.QUOTE_MINIMAL, escapechar='\\')
         return all_posts
 #-----------------------------------------------------------------

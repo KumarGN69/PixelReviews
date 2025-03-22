@@ -29,7 +29,8 @@ class CategoryClassifier:
             'Apps are difficult to use',
             'audio quality issues',
             'pairing and connection issues',
-            'pairing and sync issues'
+            'pairing and sync issues',
+            'pairing issues'
         ]
 
     #----------------creating embeddings for review and the themes-------------------------------------
