@@ -22,15 +22,18 @@ class CategoryClassifier:
     #----------------defining themes-------------------------------------------------------------------
     def get_themes(self):
         return [
-            'Call with earphones having audio issues',
-            'Video playing with earphones having issues',
-            'Conference call having issues',
-            'Ease of using the functionality',
-            'Apps are difficult to use',
-            'audio quality issues',
-            'pairing and connection issues',
-            'connection and sync issues',
-            'pairing issues'
+            'Ease of functionality',
+            'User Experience'
+            'App difficult to use',
+            'Notification issues',
+            'Software updates'
+            'Audio quality issues',
+            'Pairing issues',
+            'Connection issues',
+            'Sync issues',
+            'Voice Commands',
+            'Car Kit issues',
+            'Bluetooth Issues'
         ]
 
     #----------------creating embeddings for review and the themes-------------------------------------

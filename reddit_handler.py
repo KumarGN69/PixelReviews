@@ -66,18 +66,18 @@ class RedditHandler:
                     # reddit = self.getRedditInstance()
                     subreddit_instance = reddit.subreddit(subreddit)
                     cleaned_query = ' '.join(query.split())
-                    # print(f"title:'{cleaned_query}'")
+                    print(f"title:'{cleaned_query}'")
                     posts = subreddit_instance.search(
                         query=f"title:'{cleaned_query}'",
                         time_filter=os.getenv('TIME_FILTER'),
                         limit=int(os.getenv('NUM_POSTS')),
                         sort="relevance",
-                        syntax="cloudsearch"
+                        syntax="lucene"
                     )
                     # print(len(posts))
 
                     for post in posts:
-                        # print(f"📌 Found Post: {post.title} (Upvotes: {post.score})")
+                        print(f"📌 Found Post: {post.title} (Upvotes: {post.score})")
                         post.comments.replace_more(limit=2)  # Avoid excessive API calls
                         cleaned_post_title = pattern.sub('', post.title)
                         cleaned_self_text = pattern.sub('', post.selftext)
