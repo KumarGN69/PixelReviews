@@ -77,7 +77,7 @@ class RedditHandler:
                     # print(len(posts))
 
                     for post in posts:
-                        print(f"📌 Found Post: {post.title} (Upvotes: {post.score})")
+                        # print(f"📌 Found Post: {post.title} (Upvotes: {post.score})")
                         post.comments.replace_more(limit=2)  # Avoid excessive API calls
                         cleaned_post_title = pattern.sub('', post.title)
                         cleaned_self_text = pattern.sub('', post.selftext)
