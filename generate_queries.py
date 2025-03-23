@@ -76,4 +76,4 @@ class GenerateSearchQueries:
         df = pd.DataFrame(cleaned_queries)
         df = df.astype(str)
         df.to_json(path_or_buf="./search_queries.json", index=False)
-        df.to_csv(path_or_buf="./search_queries.csv", index=False,quoting=csv.QUOTE_MINIMAL, escapechar='\\' )
+        df.to_csv(path_or_buf="search_queries1.csv", index=False, quoting=csv.QUOTE_MINIMAL, escapechar='\\')
