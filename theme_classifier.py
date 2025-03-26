@@ -23,10 +23,10 @@ class CategoryClassifier:
     def get_themes(self):
         return [
             'Ease of functionality',
-            'User Experience'
+            'User Experience',
             'App difficult to use',
             'Notification issues',
-            'Software updates'
+            'Software updates',
             'Audio quality issues',
             'Connection and Pairing issues',
             'Sync issues',
