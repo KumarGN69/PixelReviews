@@ -39,8 +39,8 @@ class ReviewClassifier:
         #     f"out while avoiding unnecessary details."
         #     )
         self.summarization_task = (
-            f"Summarize the given review into a single, concise sentence that captures "
-            f"the core issue being described. "
+            f"Summarize into a ONE concise sentence that captures "
+            f"the core issue being described in the review "
         )
 
     def saveToFile(self, sentiment: str, comment_classification: list):
@@ -69,21 +69,21 @@ class ReviewClassifier:
         #             f"to guidelines in {self.classification_guidelines}"),
         # )
         sentiment = sentiment
-        print(comment)
+        # print(f"comment passed: {comment}")
         if task == "summarize":
             # print("Summarization starting")
             summarizer = client.generate(
                 model=self.MODEL,
-                prompt=f"perform the task in {self.summarization_task} on {comment}"
+                prompt=f"{self.summarization_task} '{comment}'"
             )
 
-            print(summarizer.response)
-            print(comment)
+            # print(f"summarizer response: {summarizer.response}")
+            # print(f"comment after summarization : {comment}")
             classification = {
-                "sentiment": sentiment,
+                "sentiment":f"{sentiment}",
                 # "categories": classifier.response,
-                "summary": summarizer.response,
-                "user_review": comment
+                "summary": f"{summarizer.response}",
+                "user_review": f"{comment}"
                 # "test_user_journey": testCUJ.response
             }
             # print(f'{sentiment}')
