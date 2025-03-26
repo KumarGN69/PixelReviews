@@ -1,6 +1,7 @@
 import praw, time, json, dotenv, os
 import pandas as pd
 import csv, re
+from datetime import datetime
 
 
 class RedditHandler:
@@ -81,9 +82,12 @@ class RedditHandler:
                         post.comments.replace_more(limit=2)  # Avoid excessive API calls
                         cleaned_post_title = pattern.sub('', post.title)
                         cleaned_self_text = pattern.sub('', post.selftext)
+                        timestamp_utc = post.created_utc
+                        readable_time = datetime.utcfromtimestamp(timestamp_utc)
                         all_posts.append({
                             "post_title": cleaned_post_title,
                             "self_text": "".join(line for line in cleaned_self_text.splitlines()),
+                            "time_frame":readable_time
 
                         })
                         time.sleep(3)  # Pause to prevent API rate limits
