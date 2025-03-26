@@ -69,16 +69,20 @@ class ReviewClassifier:
         #             f"to guidelines in {self.classification_guidelines}"),
         # )
         sentiment = sentiment
-        # print(f"comment passed: {comment}")
+        print(f"comment passed: {comment}")
         if task == "summarize":
             # print("Summarization starting")
             summarizer = client.generate(
                 model=self.MODEL,
-                prompt=f"{self.summarization_task} '{comment}'"
+                # prompt=f"{self.summarization_task} '{comment}'"
+                prompt = (
+                    f"Rewrite the following comment into a single, concise sentence that captures" 
+                    f"the main issue being described. Output only one sentence."
+                    f"Do not include explanations, elaborations, or multiple statements: {comment}"
+                )
             )
-
-            # print(f"summarizer response: {summarizer.response}")
-            # print(f"comment after summarization : {comment}")
+            print(f"summarizer response: {summarizer.response}")
+            print(f"comment after summarization : {comment}")
             classification = {
                 "sentiment":f"{sentiment}",
                 # "categories": classifier.response,

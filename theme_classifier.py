@@ -33,6 +33,7 @@ class CategoryClassifier:
             'Voice Commands',
             'Car Kit issues',
             'Bluetooth Issues'
+            'Price related'
         ]
 
     #----------------creating embeddings for review and the themes-------------------------------------
@@ -54,11 +55,12 @@ class CategoryClassifier:
     # Convert 'cleaned_reviews' column to a list and classify themes
     def generate_theme_mappings(self,sentiment):
         df = pd.read_csv(f"./reddit_{sentiment}_review_classification.csv")
-        del (df['user_review'])
+        # del (df['user_review'])
         # print(df)
         df['cleaned_reviews'] = df['summary'].apply(self.clean_text)
         df['category'] = [self.find_similarity(review, self.get_theme_embeddgings(self.get_themes())) for review in
                           df['cleaned_reviews']]
+        del (df['cleaned_reviews'])
         df.to_csv(path_or_buf=f'./classified_{sentiment}_posts.csv', index=False, quoting=csv.QUOTE_ALL, quotechar='"')
 
 
