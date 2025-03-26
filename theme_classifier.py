@@ -32,8 +32,8 @@ class CategoryClassifier:
             'Sync issues',
             'Voice Commands',
             'Car Kit issues',
-            'Bluetooth Issues'
-            'Price related'
+            'Bluetooth Issues',
+            'Price related',
         ]
 
     #----------------creating embeddings for review and the themes-------------------------------------
