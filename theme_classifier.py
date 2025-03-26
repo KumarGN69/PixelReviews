@@ -28,8 +28,7 @@ class CategoryClassifier:
             'Notification issues',
             'Software updates'
             'Audio quality issues',
-            'Pairing issues',
-            'Connection issues',
+            'Connection and Pairing issues',
             'Sync issues',
             'Voice Commands',
             'Car Kit issues',

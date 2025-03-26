@@ -30,14 +30,18 @@ class ReviewClassifier:
                 f"test user journey using language and descriptions that a tester can easily understand and follow"
                 f"that addresses the key issue described in the review"
             )
+        # self.summarization_task = (
+        #     f"You are a world-class expert in text summarization, with a keen ability to distill "
+        #     f"complex information into its most essential elements. Your task is to analyze the "
+        #     f"given review and create a summary that captures its core message and most significant "
+        #     f"points in exactly two concise, meaningful, and well-crafted sentences. "
+        #     f"Ensure that your summary is both comprehensive and succinct, leaving no crucial information "
+        #     f"out while avoiding unnecessary details."
+        #     )
         self.summarization_task = (
-            f"You are a world-class expert in text summarization, with a keen ability to distill "
-            f"complex information into its most essential elements. Your task is to analyze the "
-            f"given review and create a summary that captures its core message and most significant "
-            f"points in exactly two concise, meaningful, and well-crafted sentences. "
-            f"Ensure that your summary is both comprehensive and succinct, leaving no crucial information "
-            f"out while avoiding unnecessary details."
-            )
+            f"Summarize the given review into a single, concise sentence that captures "
+            f"the core issue being described. "
+        )
 
     def saveToFile(self, sentiment: str, comment_classification: list):
         """
@@ -65,12 +69,16 @@ class ReviewClassifier:
         #             f"to guidelines in {self.classification_guidelines}"),
         # )
         sentiment = sentiment
+        print(comment)
         if task == "summarize":
             # print("Summarization starting")
             summarizer = client.generate(
                 model=self.MODEL,
                 prompt=f"perform the task in {self.summarization_task} on {comment}"
             )
+
+            print(summarizer.response)
+            print(comment)
             classification = {
                 "sentiment": sentiment,
                 # "categories": classifier.response,

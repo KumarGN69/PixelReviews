@@ -40,32 +40,32 @@ if __name__ == "__main__":
     # print(f"time taken for generating queries", end - start)
     # # ----------------------------------------------------------------
 
-    # # ----------------fetch reddit posts------------------------------------------------
-    start = time.time()
-    df = pd.read_csv(f"./search_queries.csv")
-    queries = [df['queries'][record] for record in range(0, df['queries'].size)]
-
-    # create Reddit handler and fetch reviews
-    reddit = RedditHandler(queries=queries)
-
-    # fetch posts from reddit for generated search strings
-    reddit.fetch_posts()
-    end = time.time()
-    print(f"time taken for fetching posts", end - start)
+    # # # ----------------fetch reddit posts------------------------------------------------
+    # start = time.time()
+    # df = pd.read_csv(f"./search_queries.csv")
+    # queries = [df['queries'][record] for record in range(0, df['queries'].size)]
+    #
+    # # create Reddit handler and fetch reviews
+    # reddit = RedditHandler(queries=queries)
+    #
+    # # fetch posts from reddit for generated search strings
+    # reddit.fetch_posts()
+    # end = time.time()
+    # print(f"time taken for fetching posts", end - start)
     # # #----------------------------------------------------------------
     # # #
     # # # ---------------analyze sentiments -------------------------------------------------
-    start = time.time()
-    print(f"Starting Sentiment analysis")
-    posts = pd.read_csv('./all_posts.csv')
-    sentiments = SentimentAnalyzer()
-    sentiments.assessSentiments(reviews=posts)
-    # print the sentiment analysis summary
-    print(
-        f"Positive: {sentiments.positive_sentiments}, Negative:{sentiments.negative_sentiments}, "
-        f" Neutral: {sentiments.neutral_sentiments}, Unclassified: {sentiments.unclassified_sentiments}")
-    end = time.time()
-    print(f"time taken for sentiment analysis", end - start)
+    # start = time.time()
+    # print(f"Starting Sentiment analysis")
+    # posts = pd.read_csv('./all_posts.csv')
+    # sentiments = SentimentAnalyzer()
+    # sentiments.assessSentiments(reviews=posts)
+    # # print the sentiment analysis summary
+    # print(
+    #     f"Positive: {sentiments.positive_sentiments}, Negative:{sentiments.negative_sentiments}, "
+    #     f" Neutral: {sentiments.neutral_sentiments}, Unclassified: {sentiments.unclassified_sentiments}")
+    # end = time.time()
+    # print(f"time taken for sentiment analysis", end - start)
     #-----------------------------------------------------------------
 
 
@@ -75,11 +75,12 @@ if __name__ == "__main__":
     multiprocessing.freeze_support()
     # start the classification process
     start = time.time()
-    for sentiment in ["negative","neutral"]:
+    for sentiment in ["negative"]:
         #--------------read the sentiment files-------------------
         df = pd.read_csv(f"./reddit_{sentiment}_reviews.csv")
         df = df.astype(str)
         queries = [df['user_review'][record] for record in range(0, df['user_review'].size)]
+        # print(queries)
 
         #--------------Use Dask `delayed` to create lazy computations---------
         client = Client(n_workers=int(num_workers/2), processes=True,
@@ -101,7 +102,7 @@ if __name__ == "__main__":
     start = time.time()
     print(f"Starting theme categorization")
     theme_categorizer = CategoryClassifier()
-    for item in ["negative","neutral"]:
+    for item in ["negative"]:
         theme_categorizer.generate_theme_mappings(sentiment=item)
     end = time.time()
     print(f"time taken for theme categorization", end - start)
