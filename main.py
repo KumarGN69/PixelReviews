@@ -1,4 +1,3 @@
-
 #----------------------installed packages
 import dask
 from dask import delayed, compute
@@ -8,7 +7,6 @@ import pandas as pd
 #------------------------standard packages with python--------------------
 import multiprocessing, time, json, os
 
-
 #------------------------custom classes and packages-----------
 from reddit_handler import RedditHandler
 from sentiment_analyzer import SentimentAnalyzer
@@ -17,17 +15,19 @@ from generate_queries import GenerateSearchQueries
 from theme_classifier import CategoryClassifier
 
 #------------------------configuration to force dask scheduler to use full parallel processing -----------------
-dask.config.set({"distributed.scheduler.worker-ttl":None})
+dask.config.set({"distributed.scheduler.worker-ttl": None})
 num_workers = multiprocessing.cpu_count()
 # print(num_workers)
 
 #------------------------create a classifier instance---------------
 classifier = ReviewClassifier()
 
+
 #------------------------functions needed preprocessing-------------
 # function for parallel processing of classification tasks
-def classify_reviews(review: str, sentiment: str, task:str):
-    return classifier.classifyReview(sentiment=sentiment, comment=review,task=task)
+def classify_reviews(review: str, time_frame, sentiment: str, task: str):
+    return classifier.classifyReview(sentiment=sentiment,time_frame=time_frame,comment=review, task=task)
+
 
 #------------------------MAIN function------------------------------
 if __name__ == "__main__":
@@ -48,10 +48,10 @@ if __name__ == "__main__":
     # for record in range (0, df['queries'].size):
     #     print(df['queries'][record])
     #     queries.append(df['queries'][record])
-    
+
     # create Reddit handler and fetch reviews
     reddit = RedditHandler(queries=queries)
-    
+
     # fetch posts from reddit for generated search strings
     reddit.fetch_posts()
     end = time.time()
@@ -72,8 +72,6 @@ if __name__ == "__main__":
     print(f"time taken for sentiment analysis", end - start)
     # -----------------------------------------------------------------
 
-
-
     #---------------classify into labels-------------------------------------------------
     print(f"Starting classification of reviews into different categories")
     multiprocessing.freeze_support()
@@ -82,18 +80,21 @@ if __name__ == "__main__":
     for sentiment in ["negative","neutral"]:
         #--------------read the sentiment files-------------------
         df = pd.read_csv(f"./reddit_{sentiment}_reviews.csv")
-        df = df.astype(str)
-        queries = [df['user_review'][record] for record in range(0, df['user_review'].size)]
+        df['user_review'] = df['user_review'].astype(str)
+        # queries = [df['user_review'][record] for record in range(0, df['user_review'].size)]
 
         #--------------Use Dask `delayed` to create lazy computations---------
-        client = Client(n_workers=int(num_workers/2), processes=True,
+        client = Client(n_workers=int(num_workers / 2), processes=True,
                         threads_per_worker=1)  # Adjust workers based on CPU cores
         print(client.dashboard_link)
-
-        #-------------parallel processing -------------------------
-        tasks = [delayed(classify_reviews)(review=query, sentiment=sentiment, task="summarize") for query in queries]
+        #
+        #     #-------------parallel processing -------------------------
+        #     tasks = [delayed(classify_reviews)(review=query, sentiment=sentiment, task="summarize") for query in queries]
+        tasks = [delayed(classify_reviews)(review=df['user_review'][record], time_frame=df['time_frame'][record],
+                                           sentiment=sentiment, task="summarize") for record in
+                 range(0, df['user_review'].size)]
         results = compute(*tasks)
-        
+
         # #-----------------save the classifications into csv and json files--------------------
         classifier.saveToFile(sentiment=sentiment, comment_classification=results)
         #----------------close the client for parallel processing----------------
@@ -102,7 +103,7 @@ if __name__ == "__main__":
 
     print(f"time taken classifying reviews :", end - start)
 
- #---------------categorizing themes -------------------------------------------------
+#---------------categorizing themes -------------------------------------------------
     start = time.time()
     print(f"Starting theme categorization")
     theme_categorizer = CategoryClassifier()

@@ -34,16 +34,17 @@ class SentimentAnalyzer():
         :Saves the sentiments to different csv and json files, positive, negative, neutral and unclassfied
         """
         reviews = reviews.astype(str)
-        user_reviews = [f"{reviews['post_title'][record]}.{reviews['self_text'][record]}" for record in range(0,reviews['post_title'].size)]
-
-        for user_review in user_reviews:
+        for record in range(0,reviews['post_title'].size):
+            user_review = f"{reviews['post_title'][record]}.{reviews['self_text'][record]}"
+            print(user_review)
             sentiment_score = self.sentiment_analyzer.polarity_scores(user_review)['compound']
             if sentiment_score >= 0.1:
                 self.positive_sentiments += 1
                 self.positive_comments.append(
                     {
                         "sentiment": "Positive",
-                        "user_review": user_review
+                        "user_review": user_review,
+                        "time_frame": reviews['time_frame'][record]
                     }
                 )
                 # print(self.positive_comments)
@@ -52,7 +53,8 @@ class SentimentAnalyzer():
                 self.negative_comments.append(
                     {
                         "sentiment": "Negative",
-                        "user_review": user_review
+                        "user_review": user_review,
+                        "time_frame": reviews['time_frame'][record]
                     }
                 )
                 # print(self.neutral_sentiments)
@@ -61,7 +63,8 @@ class SentimentAnalyzer():
                 self.neutral_comments.append(
                     {
                         "sentiment": "Neutral",
-                        "user_review": user_review
+                        "user_review": user_review,
+                        "time_frame": reviews['time_frame'][record]
                     }
                 )
                 # print(self.neutral_sentiments)
@@ -70,7 +73,8 @@ class SentimentAnalyzer():
                 self.unclassified_comments.append(
                     {
                         "sentiment": "Unclassified",
-                        "user_review": user_review
+                        "user_review": user_review,
+                        "time_frame": reviews['time_frame'][record]
                     }
                 )
             #     print(f"Subjectivity of unclassified review: {sentiment.subjectivity}")

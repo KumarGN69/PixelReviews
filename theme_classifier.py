@@ -33,6 +33,7 @@ class CategoryClassifier:
             'Voice Commands',
             'Car Kit issues',
             'Bluetooth Issues',
+            'Wifi Issues'
             'Price related',
         ]
 
@@ -57,7 +58,8 @@ class CategoryClassifier:
         df = pd.read_csv(f"./reddit_{sentiment}_review_classification.csv")
         # del (df['user_review'])
         # print(df)
-        df['cleaned_reviews'] = df['summary'].apply(self.clean_text)
+        df['user_review'] = df['user_review'].astype(str)
+        df['cleaned_reviews'] = df['user_review'].apply(self.clean_text)
         df['category'] = [self.find_similarity(review, self.get_theme_embeddgings(self.get_themes())) for review in
                           df['cleaned_reviews']]
         del (df['cleaned_reviews'])

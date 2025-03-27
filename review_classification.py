@@ -1,6 +1,8 @@
 from custom_llm import LLMModel
 import pandas as pd
 import os, dotenv, csv
+
+
 class ReviewClassifier:
     """
 
@@ -11,25 +13,25 @@ class ReviewClassifier:
         self.model = LLMModel()
         # self.client = self.model.getclientinterface()
         self.MODEL = os.getenv('INFERENCE_MODEL')
-        self.classification_labels = ["Audio","Watch","Bluetooth", "Wi-Fi", "CarKit", "Other"]
+        self.classification_labels = ["Audio", "Watch", "Bluetooth", "Wi-Fi", "CarKit", "Other"]
         self.classification_guidelines = (
-                f"Categorize the review into exactly one of labels in {self.classification_labels} "
-                f"** Strictly ensuring ** : "
-                f"1. No new lines or extra white spaces."
-                f"2. No additional words, explanations, or qualifiers."
-                f"3. When no relevant mapping to the provided labels is detected, use Other"
-            )
+            f"Categorize the review into exactly one of labels in {self.classification_labels} "
+            f"** Strictly ensuring ** : "
+            f"1. No new lines or extra white spaces."
+            f"2. No additional words, explanations, or qualifiers."
+            f"3. When no relevant mapping to the provided labels is detected, use Other"
+        )
 
         self.classification_task = (
-                f"You are an expert in choosing the most appropriate label for classifying a given text "
-                f"and do not deviate from the guidelines "
-            )
+            f"You are an expert in choosing the most appropriate label for classifying a given text "
+            f"and do not deviate from the guidelines "
+        )
         self.testCUJ_task = (
-                f"You are a senior, experienced software quality analyst and tester specializing "
-                f"in mobile phones and accessories. Generate clear and concise instructions to create a "
-                f"test user journey using language and descriptions that a tester can easily understand and follow"
-                f"that addresses the key issue described in the review"
-            )
+            f"You are a senior, experienced software quality analyst and tester specializing "
+            f"in mobile phones and accessories. Generate clear and concise instructions to create a "
+            f"test user journey using language and descriptions that a tester can easily understand and follow"
+            f"that addresses the key issue described in the review"
+        )
         # self.summarization_task = (
         #     f"You are a world-class expert in text summarization, with a keen ability to distill "
         #     f"complex information into its most essential elements. Your task is to analyze the "
@@ -49,50 +51,34 @@ class ReviewClassifier:
         # print(comment_classification)
         df = pd.DataFrame(comment_classification)
         json_file_name = f"reddit_{sentiment}_review_classification.json"
-        df.to_json(json_file_name,indent=4,orient="records")
+        df.to_json(json_file_name, indent=4, orient="records")
 
         csv_file_name = f"reddit_{sentiment}_review_classification.csv"
         df.to_csv(csv_file_name, index=False, quoting=csv.QUOTE_ALL, quotechar='"')
 
-    def classifyReview(self, comment: str, sentiment: str,task:str):
+    def classifyReview(self, comment: str, time_frame, sentiment: str, task: str):
         """
         """
         classification = {}
-        # print("Entering classification")
-        # for comment in comment_list:
         model = LLMModel()
         client = model.getclientinterface()
-        # print("Classification started")
-        # classifier = client.generate(
-        #     model=self.MODEL,
-        #     prompt=(f"Perform the task in {self.classification_task} on {comment} adhering "
-        #             f"to guidelines in {self.classification_guidelines}"),
-        # )
         sentiment = sentiment
-        # print(f"comment passed: {comment}")
         if task == "summarize":
-            # print("Summarization starting")
             summarizer = client.generate(
                 model=self.MODEL,
-                # prompt=f"{self.summarization_task} '{comment}'"
-                prompt = (
-                    f"Rewrite the following comment into a single, concise sentence that captures" 
+                prompt=(
+                    f"Rewrite the following comment into a single, concise sentence that captures"
                     f"the main issue being described. Output only one sentence."
                     f"Do not include explanations, elaborations, or multiple statements: {comment}"
                 )
             )
-            # print(f"summarizer response: {summarizer.response}")
-            # print(f"comment after summarization : {comment}")
+
             classification = {
-                "sentiment":f"{sentiment}",
-                # "categories": classifier.response,
+                "sentiment": f"{sentiment}",
+                "user_review": f"{comment}",
                 "summary": f"{summarizer.response}",
-                "user_review": f"{comment}"
-                # "test_user_journey": testCUJ.response
+                "time_frame": time_frame
             }
-            # print(f'{sentiment}')
-            # print(f"summary done :\n {summarizer.response}")
-            # print(classification)
             return classification
 
         elif task == "generateTestCUJ":
