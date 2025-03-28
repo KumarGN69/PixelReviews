@@ -36,7 +36,7 @@ class SentimentAnalyzer():
         reviews = reviews.astype(str)
         for record in range(0,reviews['post_title'].size):
             user_review = f"{reviews['post_title'][record]}.{reviews['self_text'][record]}"
-            print(user_review)
+            # print(user_review)
             sentiment_score = self.sentiment_analyzer.polarity_scores(user_review)['compound']
             if sentiment_score >= 0.1:
                 self.positive_sentiments += 1
