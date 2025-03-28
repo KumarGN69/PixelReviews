@@ -62,7 +62,7 @@ class CategoryClassifier:
         # print(df)
         df['user_review'] = df['user_review'].astype(str)
         df['cleaned_reviews'] = df['user_review'].apply(self.clean_text)
-        df['category'] = [self.find_similarity(review, self.get_theme_embeddgings(self.get_themes())) for review in
+        df['Issue Category'] = [self.find_similarity(review, self.get_theme_embeddgings(self.get_themes())) for review in
                           df['cleaned_reviews']]
         del (df['cleaned_reviews'])
         df.to_csv(path_or_buf=f'./classified_{sentiment}_posts.csv', index=False, quoting=csv.QUOTE_ALL, quotechar='"')
