@@ -33,7 +33,7 @@ class CategoryClassifier:
             'Voice Commands',
             'Car Kit issues',
             'Bluetooth Issues',
-            'Wifi Issues'
+            'Wifi Issues',
             'Price related',
         ]
 
