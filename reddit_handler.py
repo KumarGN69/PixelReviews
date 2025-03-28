@@ -57,6 +57,7 @@ class RedditHandler:
         # Define a pattern to match special characters and emojis
         pattern = re.compile(r'[^A-Za-z0-9\s]+')
         all_posts = []
+
         try:
             reddit = self.getRedditInstance()
             for subreddit in self.subreddits:
