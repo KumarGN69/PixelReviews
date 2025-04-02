@@ -33,7 +33,7 @@ class CategoryClassifier:
             'Pairing Issues',
             'Sync issues',
             'Voice Commands',
-            'Car Kit issues',
+            'Android Auto Issues',
             'Bluetooth Issues',
             'Wifi Issues',
             'Price related',
@@ -44,15 +44,21 @@ class CategoryClassifier:
         return SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
 
     def get_theme_embeddgings(self, themes):
-        return self.get_sentencetransformer_model().encode(themes)
+        theme_embedding =  self.get_sentencetransformer_model().encode(themes)
+        # print(f"theme_embedding: {theme_embedding}")
+        return theme_embedding
 
     def encode_review(self, review):
-        return self.get_sentencetransformer_model().encode(review)
+        encoded_review = self.get_sentencetransformer_model().encode(review)
+        # print(f"review embedding: {encoded_review}")
+        return encoded_review
 
     def find_similarity(self, review, theme_embedding):
         review_embedding = self.encode_review(review)
         similarities = util.pytorch_cos_sim(review_embedding, theme_embedding)
-        return self.get_themes()[similarities.argmax().item()]
+        theme= self.get_themes()[similarities.argmax().item()]
+        # print(theme)
+        return theme
 
     #---------------find similarity and theme--------------------------------------------------------
     # Convert 'cleaned_reviews' column to a list and classify themes
